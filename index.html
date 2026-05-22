@@ -13,14 +13,32 @@
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col justify-between">
 
-    <header class="bg-emerald-700 text-white shadow-md py-4 px-6">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-wide">KAWAN PAPA</h1>
-            <p class="text-xs bg-emerald-800 px-3 py-1 rounded-full border border-emerald-600 font-medium">Sekretariat DPRD Kab. Padang Pariaman</p>
+    <header class="bg-emerald-700 text-white shadow-md py-3 px-4 md:px-6">
+        <div class="max-w-4xl mx-auto flex items-center justify-between gap-2">
+            
+            <div class="flex-shrink-0">
+                <img src="lambang.png" alt="Lambang Daerah" 
+                     class="h-10 w-auto md:h-14 object-contain filter drop-shadow-sm"
+                     onerror="this.style.display='none'">
+            </div>
+            
+            <div class="text-center flex-1 min-w-0 px-1">
+                <h1 class="text-lg md:text-2xl font-bold tracking-wide truncate">KAWAN PAPA</h1>
+                <p class="text-[10px] md:text-xs bg-emerald-800 px-2 md:px-3 py-0.5 rounded-full border border-emerald-600 font-medium inline-block max-w-full truncate mt-0.5">
+                    Sekretariat DPRD Kab. Padang Pariaman
+                </p>
+            </div>
+            
+            <div class="flex-shrink-0">
+                <img src="logo_dprd.png" alt="Logo DPRD" 
+                     class="h-10 w-auto md:h-14 object-contain filter drop-shadow-sm"
+                     onerror="this.style.display='none'">
+            </div>
+            
         </div>
     </header>
 
-    <main class="max-w-xl w-full mx-auto p-6 my-8 bg-white rounded-xl shadow-sm border border-gray-100">
+    <main class="max-w-xl w-full mx-auto p-6 my-6 bg-white rounded-xl shadow-sm border border-gray-100">
         <div class="text-center mb-6">
             <h2 class="text-2xl font-bold text-gray-900">Sampaikan Aspirasi Anda</h2>
             <p class="text-sm text-gray-500 mt-1">Layanan aspirasi online masyarakat Kabupaten Padang Pariaman</p>
@@ -248,7 +266,7 @@
                     body: JSON.stringify(payload)
                 });
 
-                // 5. Eksekusi Sukses (Karena no-cors tidak melempar error, berarti transmisi berhasil!)
+                // 5. Eksekusi Sukses
                 showNotification('Terima kasih! Aspirasi Anda telah berhasil dikirim dan tersimpan di database internal.', true);
                 
                 // Reset Isi Form
@@ -257,7 +275,6 @@
                 clearErrors();
 
             } catch (error) {
-                // Penanganan Eror Jika Betul-betul Putus Jaringan
                 console.error('Network Transmit Error:', error);
                 showNotification('Gagal terhubung ke server. Silakan periksa koneksi internet Anda atau coba beberapa saat lagi.', false);
             } finally {
@@ -266,7 +283,7 @@
             }
         });
 
-        console.log('KAWAN PAPA Engine - Core System CORS Shield v2.0 Active');
+        console.log('KAWAN PAPA Engine - Core System CORS Shield v2.0 Active + Responsive Branding Header');
     </script>
 </body>
 </html>
