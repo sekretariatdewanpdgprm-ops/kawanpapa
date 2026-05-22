@@ -17,7 +17,7 @@
     <meta property="og:type" content="website">
     
     <!-- Security -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; img-src 'self' data:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://script.google.com; frame-ancestors 'self'">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
     
@@ -187,8 +187,8 @@
         // ⚙️ Configuration - Update API URL here
         const CONFIG = {
             API_URL: "https://script.google.com/macros/s/AKfycbyJMGKxhTWtg5fNoI9U3ECakmZNgru3IuZ4i4Gex_z5gcxCQVLnkm0G9-Y5_TMIK2Yl/exec",
-            TIMEOUT_MS: 30000,
-            MAX_RETRIES: 3
+            TIMEOUT_MS: 45000,
+            MAX_RETRIES: 2
         };
 
         // Form elements
@@ -305,25 +305,40 @@
 
                 const response = await fetch(CONFIG.API_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(payload),
                     signal: controller.signal
                 });
 
                 clearTimeout(timeout);
+
+                // Check if response is ok
+                if (!response.ok) {
+                    throw new Error(`Server responded with status ${response.status}`);
+                }
+
+                // Try to parse response
+                try {
+                    const data = await response.json();
+                    console.log('Server response:', data);
+                } catch (e) {
+                    // Some Google Apps Script responses may not be valid JSON
+                    console.log('Response received (non-JSON)');
+                }
+
                 return true;
+
             } catch (error) {
                 if (error.name === 'AbortError') {
-                    throw new Error('Request timeout. Silakan periksa koneksi internet Anda.');
+                    throw new Error('Request timeout. Silakan periksa koneksi internet Anda dan coba lagi.');
                 }
 
                 // Retry logic
                 if (retryCount < CONFIG.MAX_RETRIES) {
                     console.log(`Retry ${retryCount + 1} dari ${CONFIG.MAX_RETRIES}`);
-                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    await new Promise(resolve => setTimeout(resolve, 1500 * (retryCount + 1)));
                     return sendToBackend(payload, retryCount + 1);
                 }
 
