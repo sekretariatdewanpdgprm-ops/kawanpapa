@@ -10,33 +10,28 @@
     <meta name="author" content="Sekretariat DPRD Kabupaten Padang Pariaman">
     
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <script src="https://www.google.com/recaptcha/api.js?render=ISI_SITE_KEY_ANDA_DI_SINI"></script>
+    
+    <style>
+        /* Menyembunyikan badge reCAPTCHA di pojok kanan bawah agar tampilan Glassmorphism tetap bersih */
+        .grecaptcha-badge { visibility: hidden !important; }
+    </style>
 </head>
 <body class="bg-gradient-to-tr from-emerald-900 via-slate-900 to-teal-800 text-gray-100 min-h-screen flex flex-col justify-between antialiased">
 
     <header class="bg-emerald-950/40 backdrop-blur-md text-white shadow-lg py-3 px-4 md:px-6 border-b border-white/10 sticky top-0 z-50">
         <div class="max-w-4xl mx-auto flex items-center justify-between gap-2">
-            
             <div class="flex-shrink-0 bg-white/10 p-1 rounded-lg backdrop-blur-sm border border-white/10">
-                <img src="lambang.png" alt="Lambang Daerah" 
-                     class="h-10 w-auto md:h-14 object-contain filter drop-shadow-md"
-                     onerror="this.style.display='none'">
+                <img src="lambang.png" alt="Lambang Daerah" class="h-10 w-auto md:h-14 object-contain filter drop-shadow-md" onerror="this.style.display='none'">
             </div>
-            
             <div class="text-center flex-1 min-w-0 px-1">
-                <h1 class="text-xl md:text-2xl font-extrabold tracking-wider bg-gradient-to-r from-emerald-400 via-teal-200 to-cyan-300 bg-clip-text text-transparent drop-shadow-sm">
-                    KAWAN PAPA
-                </h1>
-                <p class="text-[10px] md:text-xs bg-emerald-500/20 px-2 md:px-3 py-0.5 rounded-full border border-emerald-400/30 font-medium inline-block max-w-full truncate mt-1 text-emerald-300">
-                    Sekretariat DPRD Kab. Padang Pariaman
-                </p>
+                <h1 class="text-xl md:text-2xl font-extrabold tracking-wider bg-gradient-to-r from-emerald-400 via-teal-200 to-cyan-300 bg-clip-text text-transparent drop-shadow-sm">KAWAN PAPA</h1>
+                <p class="text-[10px] md:text-xs bg-emerald-500/20 px-2 md:px-3 py-0.5 rounded-full border border-emerald-400/30 font-medium inline-block max-w-full truncate mt-1 text-emerald-300">Sekretariat DPRD Kab. Padang Pariaman</p>
             </div>
-            
             <div class="flex-shrink-0 bg-white/10 p-1 rounded-lg backdrop-blur-sm border border-white/10">
-                <img src="logo_dprd.png" alt="Logo DPRD" 
-                     class="h-10 w-auto md:h-14 object-contain filter drop-shadow-md"
-                     onerror="this.style.display='none'">
+                <img src="logo_dprd.png" alt="Logo DPRD" class="h-10 w-auto md:h-14 object-contain filter drop-shadow-md" onerror="this.style.display='none'">
             </div>
-            
         </div>
     </header>
 
@@ -49,24 +44,19 @@
         <form id="formAspirasi" class="space-y-4 text-gray-200">
             <div>
                 <label for="nama" class="block text-sm font-medium text-emerald-300 mb-1">Nama Lengkap *</label>
-                <input type="text" id="nama" name="nama" required 
-                    class="w-full px-3 py-2 bg-slate-950/40 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent focus:bg-slate-950/80 text-white text-sm transition-all placeholder-gray-500" 
-                    placeholder="Masukkan nama lengkap Anda">
+                <input type="text" id="nama" name="nama" required class="w-full px-3 py-2 bg-slate-950/40 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent focus:bg-slate-950/80 text-white text-sm transition-all placeholder-gray-500" placeholder="Masukkan nama lengkap Anda">
                 <p id="namaError" class="text-xs text-rose-400 font-medium mt-1 hidden"></p>
             </div>
 
             <div>
                 <label for="no_hp" class="block text-sm font-medium text-emerald-300 mb-1">Nomor HP / WhatsApp *</label>
-                <input type="tel" id="no_hp" name="no_hp" required
-                    class="w-full px-3 py-2 bg-slate-950/40 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent focus:bg-slate-950/80 text-white text-sm transition-all placeholder-gray-500" 
-                    placeholder="Contoh: 081234567890">
+                <input type="tel" id="no_hp" name="no_hp" required class="w-full px-3 py-2 bg-slate-950/40 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent focus:bg-slate-950/80 text-white text-sm transition-all placeholder-gray-500" placeholder="Contoh: 081234567890">
                 <p id="no_hpError" class="text-xs text-rose-400 font-medium mt-1 hidden"></p>
             </div>
 
             <div>
                 <label for="kecamatan" class="block text-sm font-medium text-emerald-300 mb-1">Kecamatan *</label>
-                <select id="kecamatan" name="kecamatan" required 
-                    class="w-full px-3 py-2 bg-slate-950/40 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent focus:bg-slate-950/80 text-white text-sm transition-all appearance-none cursor-pointer">
+                <select id="kecamatan" name="kecamatan" required class="w-full px-3 py-2 bg-slate-950/40 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent focus:bg-slate-950/80 text-white text-sm transition-all">
                     <option value="" disabled selected class="bg-slate-900 text-gray-400">-- Pilih Kecamatan --</option>
                     <option value="2X11 Enam Lingkung" class="bg-slate-900 text-white">2X11 Enam Lingkung</option>
                     <option value="2X11 Kayu Tanam" class="bg-slate-900 text-white">2X11 Kayu Tanam</option>
@@ -91,9 +81,7 @@
 
             <div>
                 <label for="alamat" class="block text-sm font-medium text-emerald-300 mb-1">Alamat Lengkap / Detail *</label>
-                <input type="text" id="alamat" name="alamat" required
-                    class="w-full px-3 py-2 bg-slate-950/40 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent focus:bg-slate-950/80 text-white text-sm transition-all placeholder-gray-500" 
-                    placeholder="Nama korong, jalan, atau nomor rumah">
+                <input type="text" id="alamat" name="alamat" required class="w-full px-3 py-2 bg-slate-950/40 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent focus:bg-slate-950/80 text-white text-sm transition-all placeholder-gray-500" placeholder="Nama korong, jalan, atau nomor rumah">
                 <p id="alamatError" class="text-xs text-rose-400 font-medium mt-1 hidden"></p>
             </div>
 
@@ -102,14 +90,11 @@
                     <label for="aspirasi" class="block text-sm font-medium text-emerald-300">Isi Aspirasi *</label>
                     <span class="text-xs text-emerald-400/60"><span id="charCount" class="font-bold text-emerald-400">0</span> karakter</span>
                 </div>
-                <textarea id="aspirasi" name="aspirasi" rows="4" required 
-                    class="w-full px-3 py-2 bg-slate-950/40 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent focus:bg-slate-950/80 text-white text-sm transition-all placeholder-gray-500 shadow-inner" 
-                    placeholder="Tuliskan aspirasi, keluhan, atau saran Anda secara jelas..."></textarea>
+                <textarea id="aspirasi" name="aspirasi" rows="4" required class="w-full px-3 py-2 bg-slate-950/40 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent focus:bg-slate-950/80 text-white text-sm transition-all placeholder-gray-500 shadow-inner" placeholder="Tuliskan aspirasi, keluhan, atau saran Anda secara jelas..."></textarea>
                 <p id="aspirasiError" class="text-xs text-rose-400 font-medium mt-1 hidden"></p>
             </div>
 
-            <button type="submit" id="btnKirim" 
-                class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-emerald-950/50 cursor-pointer text-sm tracking-wide transform active:scale-[0.98]">
+            <button type="submit" id="btnKirim" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-emerald-950/50 cursor-pointer text-sm tracking-wide transform active:scale-[0.98]">
                 Kirim Aspirasi Publik
             </button>
         </form>
@@ -119,16 +104,13 @@
 
     <footer class="bg-slate-950/60 backdrop-blur-md text-center py-4 text-xs text-emerald-400/50 border-t border-white/5 tracking-wide">
         <p>&copy; 2026 Sekretariat DPRD Kabupaten Padang Pariaman. All Rights Reserved.</p>
+        <p class="text-[9px] text-gray-600 mt-1">This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.</p>
     </footer>
 
     <script>
-        /**
-         * KAWAN PAPA - Engine Pendataan Aspirasi Mandiri (Glassmorphism Edition)
-         */
-
-        // ⚙️ Konfigurasi URL Web App Google Apps Script Anda
         const CONFIG = {
-            API_URL: "https://script.google.com/macros/s/AKfycbyJMGKxhTWtg5fNoI9U3ECakmZNgru3IuZ4i4Gex_z5gcxCQVLnkm0G9-Y5_TMIK2Yl/exec"
+            API_URL: "https://script.google.com/macros/s/AKfycbyJMGKxhTWtg5fNoI9U3ECakmZNgru3IuZ4i4Gex_z5gcxCQVLnkm0G9-Y5_TMIK2Yl/exec",
+            RECAPTCHA_SITE_KEY: "6Lef6PYsAAAAAKyvQ5O6Wr4uj8m1y-WxJgxI_1i9" // 🔒 ISI DENGAN SITE KEY ANDA
         };
 
         const form = document.getElementById('formAspirasi');
@@ -137,7 +119,6 @@
         const aspirasiField = document.getElementById('aspirasi');
         const charCount = document.getElementById('charCount');
 
-        // Penghitung Jumlah Karakter Live
         aspirasiField.addEventListener('input', function() {
             charCount.textContent = this.value.length;
         });
@@ -186,7 +167,7 @@
 
             const alamat = document.getElementById('alamat').value.trim();
             if (!alamat || alamat.length < 5) {
-                showFieldError('alamat', 'Alamat wajib diisi minimal 5 karakter (Nama korong/jalan).');
+                showFieldError('alamat', 'Alamat wajib diisi minimal 5 karakter.');
                 isValid = false;
             }
 
@@ -213,7 +194,7 @@
         function setButtonLoading(isLoading) {
             if (isLoading) {
                 btnKirim.disabled = true;
-                btnKirim.innerText = "Memproses Kiriman...";
+                btnKirim.innerText = "Memverifikasi Keamanan...";
                 btnKirim.className = "w-full bg-slate-700 text-slate-400 font-semibold py-3 px-4 rounded-xl cursor-not-allowed text-sm shadow-inner transform-none";
             } else {
                 btnKirim.disabled = false;
@@ -222,10 +203,7 @@
             }
         }
 
-        /**
-         * Submit Action Handler
-         */
-        form.addEventListener('submit', async function(e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
 
             if (!validateForm()) {
@@ -236,39 +214,42 @@
             setButtonLoading(true);
             notifikasi.classList.add('hidden');
 
-            const payload = {
-                nama: document.getElementById('nama').value.trim(),
-                no_hp: document.getElementById('no_hp').value.trim(),
-                kecamatan: document.getElementById('kecamatan').value,
-                alamat: document.getElementById('alamat').value.trim(),
-                aspirasi: document.getElementById('aspirasi').value.trim()
-            };
+            // 🔐 EKSEKUSI PENGAMBILAN TOKEN RECAPTCHA SECARA TERSEMBUNYI
+            grecaptcha.ready(function() {
+                grecaptcha.execute(CONFIG.RECAPTCHA_SITE_KEY, {action: 'submit_aspirasi'}).then(async function(token) {
+                    
+                    // Masukkan token ke dalam objek data kiriman
+                    const payload = {
+                        nama: document.getElementById('nama').value.trim(),
+                        no_hp: document.getElementById('no_hp').value.trim(),
+                        kecamatan: document.getElementById('kecamatan').value,
+                        alamat: document.getElementById('alamat').value.trim(),
+                        aspirasi: document.getElementById('aspirasi').value.trim(),
+                        recaptcha_token: token
+                    };
 
-            try {
-                // Eksekusi API Berbasis Jaringan Tanpa Kebocoran CORS (Anti-Duplicate Mode)
-                await fetch(CONFIG.API_URL, {
-                    method: 'POST',
-                    mode: 'no-cors', 
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
+                    try {
+                        await fetch(CONFIG.API_URL, {
+                            method: 'POST',
+                            mode: 'no-cors', 
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        showNotification('Terima kasih! Aspirasi Anda telah lolos uji keamanan dan sukses tersimpan di database.', true);
+                        form.reset();
+                        charCount.textContent = '0';
+                        clearErrors();
+
+                    } catch (error) {
+                        console.error('Transmission Error:', error);
+                        showNotification('Koneksi terputus. Silakan periksa jaringan internet Anda.', false);
+                    } finally {
+                        setButtonLoading(false);
+                    }
                 });
-
-                showNotification('Terima kasih! Aspirasi Anda telah berhasil dikirim dan tersimpan dengan aman di database internal.', true);
-                form.reset();
-                charCount.textContent = '0';
-                clearErrors();
-
-            } catch (error) {
-                console.error('Transmission Error:', error);
-                showNotification('Koneksi terputus. Silakan periksa jaringan internet Anda dan coba lagi.', false);
-            } finally {
-                setButtonLoading(false);
-            }
+            });
         });
-
-        console.log('KAWAN PAPA Engine - Glassmorphism UI Active');
     </script>
 </body>
 </html>
