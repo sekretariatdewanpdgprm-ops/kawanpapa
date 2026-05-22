@@ -11,7 +11,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-    <script src="https://www.google.com/recaptcha/api.js?render=ISI_SITE_KEY_ANDA_DI_SINI"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6Lef6PYsAAAAAKyvQ5O6Wr4uj8m1y-WxJgxI_1i9"></script>
     
     <style>
         /* Menyembunyikan badge reCAPTCHA di pojok kanan bawah agar tampilan Glassmorphism tetap bersih */
@@ -135,10 +135,10 @@
          */
 
         const CONFIG = {
-            // ⚙️ URL Web App Google Apps Script Terbaru Anda
+            // URL Web App Google Apps Script Endpoint Terbaru
             API_URL: "https://script.google.com/macros/s/AKfycbyJMGKxhTWtg5fNoI9U3ECakmZNgru3IuZ4i4Gex_z5gcxCQVLnkm0G9-Y5_TMIK2Yl/exec",
             
-            // 🔒 Masukkan SITE KEY dari Google reCAPTCHA Admin Console di bawah ini
+            // Kunci Situs Publik Terverifikasi Anda
             RECAPTCHA_SITE_KEY: "6Lef6PYsAAAAAKyvQ5O6Wr4uj8m1y-WxJgxI_1i9" 
         };
 
@@ -148,7 +148,6 @@
         const aspirasiField = document.getElementById('aspirasi');
         const charCount = document.getElementById('charCount');
 
-        // Penghitung Jumlah Karakter Live
         aspirasiField.addEventListener('input', function() {
             charCount.textContent = this.value.length;
         });
@@ -234,7 +233,7 @@
         }
 
         /**
-         * Submit Action Handler dengan Trigger Token reCAPTCHA
+         * Submit Action Handler dengan Eksekusi Token Keamanan Tersembunyi
          */
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -247,11 +246,10 @@
             setButtonLoading(true);
             notifikasi.classList.add('hidden');
 
-            // 🔐 EKSEKUSI PENGAMBILAN TOKEN RECAPTCHA SECARA TERSEMBUNYI
+            // 🔐 EKSEKUSI RECAPTCHA V3 SISI KLIEN
             grecaptcha.ready(function() {
                 grecaptcha.execute(CONFIG.RECAPTCHA_SITE_KEY, {action: 'submit_aspirasi'}).then(async function(token) {
                     
-                    // Susun paket payload data termasuk token reCAPTCHA
                     const payload = {
                         nama: document.getElementById('nama').value.trim(),
                         no_hp: document.getElementById('no_hp').value.trim(),
@@ -262,7 +260,7 @@
                     };
 
                     try {
-                        // Kirim data menggunakan jalur kebal CORS 'no-cors' menuju URL Web App Baru
+                        // Kirim data langsung ke endpoint Google Apps Script
                         await fetch(CONFIG.API_URL, {
                             method: 'POST',
                             mode: 'no-cors', 
@@ -287,7 +285,7 @@
             });
         });
 
-        console.log('KAWAN PAPA Engine v2.5 - Production Mode Ready with New GAS Endpoint');
+        console.log('KAWAN PAPA Engine v2.5 - Production Ready with Active Site Key Integration.');
     </script>
 </body>
 </html>
