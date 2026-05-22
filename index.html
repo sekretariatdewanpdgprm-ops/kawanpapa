@@ -25,21 +25,53 @@
             <div>
                 <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap *</label>
                 <input type="text" id="nama" name="nama" required 
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500" 
                     placeholder="Masukkan nama lengkap Anda">
             </div>
 
             <div>
                 <label for="no_hp" class="block text-sm font-medium text-gray-700 mb-1">Nomor HP / WhatsApp</label>
                 <input type="tel" id="no_hp" name="no_hp" 
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500" 
                     placeholder="Contoh: 081234567890">
             </div>
 
             <div>
+                <label for="kecamatan" class="block text-sm font-medium text-gray-700 mb-1">Kecamatan *</label>
+                <select id="kecamatan" name="kecamatan" required 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                    <option value="" disabled selected>-- Pilih Kecamatan --</option>
+                    <option value="2X11 Enam Lingkung">2X11 Enam Lingkung</option>
+                    <option value="2X11 Kayu Tanam">2X11 Kayu Tanam</option>
+                    <option value="IV Koto Aur Malintang">IV Koto Aur Malintang</option>
+                    <option value="Batang Anai">Batang Anai</option>
+                    <option value="Batang Gasan">Batang Gasan</option>
+                    <option value="Enam Lingkung">Enam Lingkung</option>
+                    <option value="Lubuk Alung">Lubuk Alung</option>
+                    <option value="Nan Sabaris">Nan Sabaris</option>
+                    <option value="Padang Sago">Padang Sago</option>
+                    <option value="Patamuan">Patamuan</option>
+                    <option value="Sintuk Toboh Gadang">Sintuk Toboh Gadang</option>
+                    <option value="Sungai Geringging">Sungai Geringging</option>
+                    <option value="Sungai Limau">Sungai Limau</option>
+                    <option value="Ulakan Tapakis">Ulakan Tapakis</option>
+                    <option value="V Koto Kampung Dalam">V Koto Kampung Dalam</option>
+                    <option value="V Koto Timur">V Koto Timur</option>
+                    <option value="VII Koto Sungai Sarik">VII Koto Sungai Sarik</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="alamat" class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap / Detail</label>
+                <input type="text" id="alamat" name="alamat" 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500" 
+                    placeholder="Nama korong, jalan, atau nomor rumah">
+            </div>
+
+            <div>
                 <label for="aspirasi" class="block text-sm font-medium text-gray-700 mb-1">Isi Aspirasi *</label>
-                <textarea id="aspirasi" name="aspirasi" rows="5" required 
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" 
+                <textarea id="aspirasi" name="aspirasi" rows="4" required 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500" 
                     placeholder="Tuliskan aspirasi, keluhan, atau saran Anda secara jelas..."></textarea>
             </div>
 
@@ -53,60 +85,54 @@
     </main>
 
     <footer class="bg-gray-100 text-center py-4 text-xs text-gray-500 border-t border-gray-200">
-        <p>&copy; Handra Praditia Putra | 2026 Sekretariat DPRD Kabupaten Padang Pariaman. All Rights Reserved.</p>
+        <p>&copy; 2026 Sekretariat DPRD Kabupaten Padang Pariaman. All Rights Reserved.</p>
     </footer>
 
     <script>
-        // 📌 PENTING: Ganti URL di bawah ini dengan URL Web App dari Google Apps Script Anda yang dicatat tadi!
-        const URL_GAS_BACKEND = "https://script.google.com/macros/s/AKfycbwsPnsG0SIuiL5kiZ-WxvFfhH1TLjOPvIbQHoXqNAlXIFrnDt-0f_0wf--sizi2yF4n/exec";
+        // 📌 JANGAN LUPA: Masukkan kembali URL Web App GAS Anda di bawah ini!
+        const URL_GAS_BACKEND = "MASUKKAN_URL_WEB_APP_GAS_ANDA_DISINI";
 
         document.getElementById('formAspirasi').addEventListener('submit', async function(e) {
-            e.preventDefault(); // Mencegah halaman reload saat submit
+            e.preventDefault();
 
             const btnKirim = document.getElementById('btnKirim');
             const notifikasi = document.getElementById('notifikasi');
 
-            // Ambil data dari elemen input form
+            // Payload data yang ditambahkan field kecamatan dan alamat
             const payload = {
                 nama: document.getElementById('nama').value,
                 no_hp: document.getElementById('no_hp').value,
+                kecamatan: document.getElementById('kecamatan').value,
+                alamat: document.getElementById('alamat').value,
                 aspirasi: document.getElementById('aspirasi').value
             };
 
-            // Mengubah tampilan tombol menjadi mode loading
             btnKirim.disabled = true;
             btnKirim.innerText = "Mengirim...";
             btnKirim.className = "w-full bg-gray-400 text-white font-medium py-2.5 px-4 rounded-lg cursor-not-allowed";
-
-            // Sembunyikan notifikasi sebelumnya jika ada
             notifikasi.classList.add('hidden');
 
             try {
-                // Mengirim data menggunakan metode POST ke URL Google Apps Script via HTTPS
-                const response = await fetch(URL_GAS_BACKEND, {
+                await fetch(URL_GAS_BACKEND, {
                     method: 'POST',
-                    mode: 'no-cors', // Digunakan untuk menghindari kendala CORS pada request lintas domain gratisan
+                    mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(payload)
                 });
 
-                // Karena menggunakan mode 'no-cors', kita asumsikan pengiriman sukses jika tidak masuk ke blok catch
                 notifikasi.innerText = "Terima kasih! Aspirasi Anda telah berhasil dikirim dan tersimpan di database internal.";
                 notifikasi.className = "mt-4 p-3 rounded-lg text-center font-medium bg-green-100 text-green-700 border border-green-200";
                 notifikasi.classList.remove('hidden');
 
-                // Reset isi form setelah berhasil
                 document.getElementById('formAspirasi').reset();
 
             } catch (error) {
-                // Penanganan error (error handling) di sisi UI jika koneksi bermasalah
                 notifikasi.innerText = "Gagal mengirim data: " + error.message + ". Silakan coba lagi.";
                 notifikasi.className = "mt-4 p-3 rounded-lg text-center font-medium bg-red-100 text-red-700 border border-red-200";
                 notifikasi.classList.remove('hidden');
             } finally {
-                // Mengembalikan tombol ke status semula
                 btnKirim.disabled = false;
                 btnKirim.innerText = "Kirim Aspirasi";
                 btnKirim.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 px-4 rounded-lg transition duration-200 shadow-sm cursor-pointer";
