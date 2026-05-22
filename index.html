@@ -10,12 +10,6 @@
     <meta name="author" content="Sekretariat DPRD Kabupaten Padang Pariaman">
     
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
-    <script src="https://www.google.com/recaptcha/api.js?render=6Lef6PYsAAAAAKyvQ5O6Wr4uj8m1y-WxJgxI_1i9"></script>
-    
-    <style>
-        .grecaptcha-badge { visibility: hidden !important; }
-    </style>
 </head>
 <body class="bg-gradient-to-tr from-emerald-900 via-slate-900 to-teal-800 text-gray-100 min-h-screen flex flex-col justify-between antialiased">
 
@@ -103,17 +97,13 @@
 
     <footer class="bg-slate-950/60 backdrop-blur-md text-center py-4 text-xs text-emerald-400/50 border-t border-white/5 tracking-wide">
         <p>&copy; 2026 Sekretariat DPRD Kabupaten Padang Pariaman. All Rights Reserved.</p>
-        <p class="text-[9px] text-gray-600 mt-1">This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.</p>
     </footer>
 
     <script>
         const CONFIG = {
-    // ⚙️ Ganti dengan URL Deployment terbaru Anda
-    API_URL: "https://script.google.com/macros/s/AKfycbzvPcI-251IoqdimHlloudSnpqJ79NOi0_F7KDlOjQE4WbUS0ypqGwAp1m-VoxGDKAs/exec",
-    
-    // Kunci Situs Publik Terverifikasi Anda (Tetap Sama)
-    RECAPTCHA_SITE_KEY: "6Lef6PYsAAAAAKyvQ5O6Wr4uj8m1y-WxJgxI_1i9" 
-};
+            // ⚙️ GANTI DENGAN URL DEPLOYMENT BARU YANG ANDA DAPATKAN DARI LANGKAH 1
+            API_URL: "MASUKKAN_URL_WEB_APP_BARU_DI_SINI"
+        };
 
         const form = document.getElementById('formAspirasi');
         const btnKirim = document.getElementById('btnKirim');
@@ -169,7 +159,7 @@
 
             const alamat = document.getElementById('alamat').value.trim();
             if (!alamat || alamat.length < 5) {
-                showFieldError('alamat', 'Alamat wajib diisi minimal 5 karakter (Nama korong/jalan).');
+                showFieldError('alamat', 'Alamat wajib diisi minimal 5 karakter.');
                 isValid = false;
             }
 
@@ -196,8 +186,8 @@
         function setButtonLoading(isLoading) {
             if (isLoading) {
                 btnKirim.disabled = true;
-                btnKirim.innerText = "Memverifikasi Keamanan...";
-                btnKirim.className = "w-full bg-slate-700 text-slate-400 font-semibold py-3 px-4 rounded-xl cursor-not-allowed text-sm shadow-inner transform-none";
+                btnKirim.innerText = "Mengirim Aspirasi...";
+                btnKirim.className = "w-full bg-slate-700 text-slate-400 font-semibold py-3 px-4 rounded-xl cursor-not-allowed text-sm shadow-inner";
             } else {
                 btnKirim.disabled = false;
                 btnKirim.innerText = "Kirim Aspirasi Publik";
@@ -205,7 +195,7 @@
             }
         }
 
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             if (!validateForm()) {
@@ -216,42 +206,35 @@
             setButtonLoading(true);
             notifikasi.classList.add('hidden');
 
-            grecaptcha.ready(function() {
-                grecaptcha.execute(CONFIG.RECAPTCHA_SITE_KEY, {action: 'submit_aspirasi'}).then(async function(token) {
-                    
-                    const payload = {
-                        nama: document.getElementById('nama').value.trim(),
-                        no_hp: document.getElementById('no_hp').value.trim(),
-                        kecamatan: document.getElementById('kecamatan').value,
-                        alamat: document.getElementById('alamat').value.trim(),
-                        aspirasi: document.getElementById('aspirasi').value.trim(),
-                        recaptcha_token: token
-                    };
+            const payload = {
+                nama: document.getElementById('nama').value.trim(),
+                no_hp: document.getElementById('no_hp').value.trim(),
+                kecamatan: document.getElementById('kecamatan').value,
+                alamat: document.getElementById('alamat').value.trim(),
+                aspirasi: document.getElementById('aspirasi').value.trim()
+            };
 
-                    try {
-                        // Menggunakan sistem 'no-cors' dengan parsing penanganan data ter-upgrade di skrip backend
-                        await fetch(CONFIG.API_URL, {
-                            method: 'POST',
-                            mode: 'no-cors', 
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(payload)
-                        });
-
-                        showNotification('Terima kasih! Aspirasi Anda telah lolos uji keamanan bot dan sukses tersimpan di database internal.', true);
-                        form.reset();
-                        charCount.textContent = '0';
-                        clearErrors();
-
-                    } catch (error) {
-                        console.error('Transmission Error:', error);
-                        showNotification('Koneksi terputus atau terjadi kesalahan server. Coba beberapa saat lagi.', false);
-                    } finally {
-                        setButtonLoading(false);
-                    }
+            try {
+                await fetch(CONFIG.API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', 
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
                 });
-            });
+
+                showNotification('Terima kasih! Aspirasi Anda berhasil terkirim dan sukses disimpan di database.', true);
+                form.reset();
+                charCount.textContent = '0';
+                clearErrors();
+
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Koneksi terputus atau terjadi masalah server. Silakan coba lagi.', false);
+            } finally {
+                setButtonLoading(false);
+            }
         });
     </script>
 </body>
