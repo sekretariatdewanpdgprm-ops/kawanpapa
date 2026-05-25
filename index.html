@@ -28,16 +28,15 @@
         </div>
     </header>
 
-    <main class="max-w-xl w-full mx-auto p-6 my-8 bg-slate-900/60 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10 mx-4 sm:mx-auto">
+    <main class="max-w-xl w-full mx-auto p-6 mt-8 bg-slate-900/60 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10 mx-4 sm:mx-auto">
         <div class="text-center mb-6">
             <h2 class="text-2xl font-bold text-white tracking-wide">Sampaikan Aspirasi Anda</h2>
             <p class="text-sm text-emerald-300/70 mt-1">Layanan aspirasi online masyarakat Kabupaten Padang Pariaman</p>
         </div>
 
         <form id="formAspirasi" class="space-y-4 text-gray-200">
-            
             <div class="hidden" aria-hidden="true">
-                <label class="text-sm font-medium text-rose-400">Nomor Fax Instansi (Abaikan kolom ini)</label>
+                <label class="text-sm font-medium text-rose-400">Nomor Fax Instansi</label>
                 <input type="text" id="fax_number" name="fax_number" autocomplete="off" tabindex="-1" class="w-full px-3 py-2 bg-slate-950">
             </div>
 
@@ -101,13 +100,65 @@
         <div id="notifikasi" class="mt-4 p-3 rounded-xl text-center font-semibold text-sm hidden"></div>
     </main>
 
+    <section class="max-w-4xl w-full mx-auto p-6 mb-12 bg-slate-900/60 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10 mx-4 sm:mx-auto">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 border-b border-white/10 pb-4">
+            <div>
+                <h3 class="text-xl font-bold text-white tracking-wide flex items-center gap-2">
+                    <span>📋</span> Laporan Aspirasi Masuk
+                </h3>
+                <p class="text-xs text-emerald-300/60 mt-0.5">Daftar aspirasi masyarakat Kabupaten Padang Pariaman secara real-time</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <label for="filterKecamatan" class="text-xs font-medium text-emerald-300 whitespace-nowrap">Filter Wilayah:</label>
+                <select id="filterKecamatan" class="px-3 py-1.5 bg-slate-950/80 border border-white/10 rounded-xl text-white text-xs focus:outline-none focus:ring-1 focus:ring-emerald-400">
+                    <option value="SEMUA">-- Semua Kecamatan --</option>
+                    <option value="2X11 Enam Lingkung">2X11 Enam Lingkung</option>
+                    <option value="2X11 Kayu Tanam">2X11 Kayu Tanam</option>
+                    <option value="IV Koto Aur Malintang">IV Koto Aur Malintang</option>
+                    <option value="Batang Anai">Batang Anai</option>
+                    <option value="Batang Gasan">Batang Gasan</option>
+                    <option value="Enam Lingkung">Enam Lingkung</option>
+                    <option value="Lubuk Alung">Lubuk Alung</option>
+                    <option value="Nan Sabaris">Nan Sabaris</option>
+                    <option value="Padang Sago">Padang Sago</option>
+                    <option value="Patamuan">Patamuan</option>
+                    <option value="Sintuk Toboh Gadang">Sintuk Toboh Gadang</option>
+                    <option value="Sungai Geringging">Sungai Geringging</option>
+                    <option value="Sungai Limau">Sungai Limau</option>
+                    <option value="Ulakan Tapakis">Ulakan Tapakis</option>
+                    <option value="V Koto Kampung Dalam">V Koto Kampung Dalam</option>
+                    <option value="V Koto Timur">V Koto Timur</option>
+                    <option value="VII Koto Sungai Sarik">VII Koto Sungai Sarik</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-white/5 bg-slate-950/20 max-h-[500px] overflow-y-auto">
+            <table class="w-full text-left border-collapse text-xs md:text-sm">
+                <thead>
+                    <tr class="bg-emerald-950/50 border-b border-white/10 text-emerald-300 font-semibold sticky top-0 backdrop-blur-md">
+                        <th class="p-3 w-32">Waktu</th>
+                        <th class="p-3 w-40">Nama</th>
+                        <th class="p-3 w-44">Kecamatan</th>
+                        <th class="p-3">Isi Aspirasi</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelAspirasiBody" class="divide-y divide-white/5 text-gray-300">
+                    <tr>
+                        <td colspan="4" class="p-8 text-center text-gray-500 animate-pulse">Memuat database aspirasi...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
     <footer class="bg-slate-950/60 backdrop-blur-md text-center py-4 text-xs text-emerald-400/50 border-t border-white/5 tracking-wide">
         <p>&copy; 2026 Sekretariat DPRD Kabupaten Padang Pariaman. All Rights Reserved.</p>
     </footer>
 
     <script>
         const CONFIG = {
-            // ⚙️ MASUKKAN URL DEPLOYMENT BACKEND ANDA YANG AKTIF SAAT INI
+            // ⚙️ PASTIKAN SINKRON DENGAN URL WEB APP BARU HASIL LANGKAH 1
             API_URL: "https://script.google.com/macros/s/AKfycbzvPcI-251IoqdimHlloudSnpqJ79NOi0_F7KDlOjQE4WbUS0ypqGwAp1m-VoxGDKAs/exec"
         };
 
@@ -116,15 +167,62 @@
         const notifikasi = document.getElementById('notifikasi');
         const aspirasiField = document.getElementById('aspirasi');
         const charCount = document.getElementById('charCount');
+        const tabelBody = document.getElementById('tabelAspirasiBody');
+        const filterKecamatan = document.getElementById('filterKecamatan');
         
-        // Konfigurasi waktu kunci (10 Menit = 600.000 milidetik)
+        let SEMUA_DATA_ASPIRASI = []; // Menyimpan memori data dari Google Sheets
         const COOLDOWN_TIME = 10 * 60 * 1000; 
 
         aspirasiField.addEventListener('input', function() {
             charCount.textContent = this.value.length;
         });
 
-        // Fungsi mengecek dan menjalankan hitung mundur jika browser sedang dikunci
+        // 🔄 MEMUAT DATA DARI GOOGLE SHEETS
+        async function muatLaporanPublik() {
+            try {
+                const response = await fetch(CONFIG.API_URL);
+                const hasil = await response.json();
+                
+                if (hasil.status === "success") {
+                    SEMUA_DATA_ASPIRASI = hasil.data;
+                    tampilkanDataKeTabel(SEMUA_DATA_ASPIRASI);
+                } else {
+                    tabelBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-rose-400">Gagal memuat data laporan dari server.</td></tr>`;
+                }
+            } catch (error) {
+                console.error("Error load data:", error);
+                tabelBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-rose-400">Koneksi lambat. Gagal menyambungkan ke database.</td></tr>`;
+            }
+        }
+
+        // 📝 MERENDER DATA KE TABEL HTML
+        function tampilkanDataKeTabel(dataArray) {
+            if (dataArray.length === 0) {
+                tabelBody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-500">Belum ada aspirasi resmi dari wilayah ini.</td></tr>`;
+                return;
+            }
+
+            tabelBody.innerHTML = dataArray.map(item => `
+                <tr class="hover:bg-white/5 transition-colors duration-150">
+                    <td class="p-3 text-gray-400 font-mono whitespace-nowrap">${item.tanggal}</td>
+                    <td class="p-3 font-medium text-white truncate max-w-[150px]">${item.nama}</td>
+                    <td class="p-3 text-emerald-400"><span class="bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">${item.kecamatan}</span></td>
+                    <td class="p-3 text-gray-300 break-words max-w-xs md:max-w-md">${item.aspirasi}</td>
+                </tr>
+            `).join('');
+        }
+
+        // 🔍 LOGIKA FILTER KECAMATAN
+        filterKecamatan.addEventListener('change', function() {
+            const pilihan = this.value;
+            if (pilihan === "SEMUA") {
+                tampilkanDataKeTabel(SEMUA_DATA_ASPIRASI);
+            } else {
+                const dataFilter = SEMUA_DATA_ASPIRASI.filter(item => item.kecamatan === pilihan);
+                tampilkanDataKeTabel(dataFilter);
+            }
+        });
+
         function checkCooldown() {
             const lastSubmit = localStorage.getItem('kawanpapa_last_submit');
             if (lastSubmit) {
@@ -140,7 +238,6 @@
             return false;
         }
 
-        // Fungsi animasi timer hitung mundur pada tombol
         function startCooldownTimer(duration) {
             btnKirim.disabled = true;
             const endTime = Date.now() + duration;
@@ -154,7 +251,6 @@
                 } else {
                     const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-                    
                     btnKirim.innerText = `Tunggu ${minutes}m ${seconds}s untuk kirim lagi`;
                     btnKirim.className = "w-full bg-slate-800 text-emerald-400 border border-emerald-500/20 font-semibold py-3 px-4 rounded-xl cursor-not-allowed text-sm shadow-inner";
                 }
@@ -244,9 +340,7 @@
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Proteksi ganda: cek ulang status kunci saat tombol ditekan
             if (checkCooldown()) return;
-
             if (!validateForm()) {
                 showNotification('Silakan periksa kembali kolom input berlabel merah.', false);
                 return;
@@ -268,23 +362,20 @@
                 await fetch(CONFIG.API_URL, {
                     method: 'POST',
                     mode: 'no-cors', 
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
                 showNotification('Terima kasih! Aspirasi Anda berhasil terkirim dan sukses disimpan di database.', true);
                 
-                // 🔐 SUKSES: Pasang gembok waktu di browser user selama 10 menit
                 localStorage.setItem('kawanpapa_last_submit', Date.now().toString());
-                
                 form.reset();
                 charCount.textContent = '0';
                 clearErrors();
-                
-                // Jalankan hitung mundur tombol
                 checkCooldown();
+                
+                // 🔄 Refresh otomatis tabel laporan sesaat setelah kirim sukses
+                setTimeout(muatLaporanPublik, 1500);
 
             } catch (error) {
                 console.error('Error:', error);
@@ -293,8 +384,9 @@
             }
         });
 
-        // Jalankan pengecekan gembok otomatis saat halaman pertama kali dibuka/direfresh
+        // Jalankan pengecekan gembok & muat database laporan saat web pertama buka
         checkCooldown();
+        muatLaporanPublik();
     </script>
 </body>
 </html>
