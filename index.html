@@ -107,7 +107,7 @@
 
     <script>
         const CONFIG = {
-            // ⚙️ GANTI DENGAN URL DEPLOYMENT BARU HASIL DARI LANGKAH 1
+            // ⚙️ MASUKKAN URL DEPLOYMENT BACKEND ANDA YANG AKTIF SAAT INI
             API_URL: "https://script.google.com/macros/s/AKfycbzvPcI-251IoqdimHlloudSnpqJ79NOi0_F7KDlOjQE4WbUS0ypqGwAp1m-VoxGDKAs/exec"
         };
 
@@ -116,10 +116,50 @@
         const notifikasi = document.getElementById('notifikasi');
         const aspirasiField = document.getElementById('aspirasi');
         const charCount = document.getElementById('charCount');
+        
+        // Konfigurasi waktu kunci (10 Menit = 600.000 milidetik)
+        const COOLDOWN_TIME = 10 * 60 * 1000; 
 
         aspirasiField.addEventListener('input', function() {
             charCount.textContent = this.value.length;
         });
+
+        // Fungsi mengecek dan menjalankan hitung mundur jika browser sedang dikunci
+        function checkCooldown() {
+            const lastSubmit = localStorage.getItem('kawanpapa_last_submit');
+            if (lastSubmit) {
+                const elapsedTime = Date.now() - parseInt(lastSubmit);
+                if (elapsedTime < COOLDOWN_TIME) {
+                    const remainingTime = COOLDOWN_TIME - elapsedTime;
+                    startCooldownTimer(remainingTime);
+                    return true;
+                } else {
+                    localStorage.removeItem('kawanpapa_last_submit');
+                }
+            }
+            return false;
+        }
+
+        // Fungsi animasi timer hitung mundur pada tombol
+        function startCooldownTimer(duration) {
+            btnKirim.disabled = true;
+            const endTime = Date.now() + duration;
+
+            const interval = setInterval(() => {
+                const remaining = endTime - Date.now();
+                if (remaining <= 0) {
+                    clearInterval(interval);
+                    localStorage.removeItem('kawanpapa_last_submit');
+                    setButtonLoading(false); 
+                } else {
+                    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+                    
+                    btnKirim.innerText = `Tunggu ${minutes}m ${seconds}s untuk kirim lagi`;
+                    btnKirim.className = "w-full bg-slate-800 text-emerald-400 border border-emerald-500/20 font-semibold py-3 px-4 rounded-xl cursor-not-allowed text-sm shadow-inner";
+                }
+            }, 1000);
+        }
 
         function validatePhoneNumber(phone) {
             const pattern = /^(\+62|0)[0-9]{9,13}$/;
@@ -204,6 +244,9 @@
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
+            // Proteksi ganda: cek ulang status kunci saat tombol ditekan
+            if (checkCooldown()) return;
+
             if (!validateForm()) {
                 showNotification('Silakan periksa kembali kolom input berlabel merah.', false);
                 return;
@@ -218,7 +261,7 @@
                 kecamatan: document.getElementById('kecamatan').value,
                 alamat: document.getElementById('alamat').value.trim(),
                 aspirasi: document.getElementById('aspirasi').value.trim(),
-                fax_number: document.getElementById('fax_number').value // Menyertakan data perangkap siluman
+                fax_number: document.getElementById('fax_number').value
             };
 
             try {
@@ -232,17 +275,26 @@
                 });
 
                 showNotification('Terima kasih! Aspirasi Anda berhasil terkirim dan sukses disimpan di database.', true);
+                
+                // 🔐 SUKSES: Pasang gembok waktu di browser user selama 10 menit
+                localStorage.setItem('kawanpapa_last_submit', Date.now().toString());
+                
                 form.reset();
                 charCount.textContent = '0';
                 clearErrors();
+                
+                // Jalankan hitung mundur tombol
+                checkCooldown();
 
             } catch (error) {
                 console.error('Error:', error);
                 showNotification('Koneksi terputus atau terjadi masalah server. Silakan coba lagi.', false);
-            } finally {
                 setButtonLoading(false);
             }
         });
+
+        // Jalankan pengecekan gembok otomatis saat halaman pertama kali dibuka/direfresh
+        checkCooldown();
     </script>
 </body>
 </html>
